@@ -6,6 +6,7 @@ import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import CloseIcon from "@mui/icons-material/Close";
+import TextField from "@mui/material/TextField";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { StaticDateTimePicker } from "@mui/x-date-pickers/StaticDateTimePicker";
@@ -30,19 +31,23 @@ L.Icon.Default.mergeOptions({
 
 export default function SimpleMap() {
   const pastMonth = new Date(2023, 5, 9);
+  // const date = new Date();
+  // console.log(dayjs(new Date(dayjs(date).format())).format('DD/MM/YYYY'));
   const defaultSelected = {
     from: pastMonth,
     to: addDays(pastMonth, 4),
   };
   const ref = useRef(null);
   const [markerState, setMarkerState] = useState(null);
+  const [currentError, setCurrentError] = useState(null);
+  const [errorDate, setErrorDate] = useState(false);
   const [checkCar, setCheckCar] = useState(false);
   const [nextButton, setNextButton] = useState(false);
   const [bookState, setBookState] = useState(false);
   const [bookStartPicker, setBookStartPicker] = useState(false);
   const [bookEndPicker, setBookEndPicker] = useState(false);
-  const [bookStart, setBookStart] = useState(false);
-  const [bookEnd, setBookEnd] = useState(false);
+  const [bookStart, setBookStart] = useState(null);
+  const [bookEnd, setBookEnd] = useState(null);
   const [rent, setRent] = useState(false);
   var yellowIcon = L.icon({
     shadowUrl: require("leaflet/dist/images/marker-shadow.png"),
@@ -150,7 +155,10 @@ export default function SimpleMap() {
         data[0],
         data[index]
       )}`;
-      if (index == 0) {
+      if (bookStart != null && bookEnd != null) {
+        markerMsg += `<\br> ${bookStart} <\br> ${bookEnd}`;
+      }
+      if (index === 0) {
         markerMsg = "You are here";
       }
       return (
@@ -180,25 +188,46 @@ export default function SimpleMap() {
   };
 
   const setStartDate = (date) => {
-    setBookStart(dayjs(date.$d).format());
-    setNextButton(true);
-  };
-
-  const setNextTimePicker = () => {
-    setNextButton(false);
-    if (bookStartPicker) {
-      setBookStartPicker(false);
-      setBookEndPicker(true);
-    } else {
+    try {
+      if (bookStartPicker === true) {
+        setBookStart(dayjs(date.$d).format());
+      }
+      if (bookEndPicker === true) {
+        setBookEnd(dayjs(date.$d).format());
+      }
+    } catch (error) {
       setBookEndPicker(false);
     }
+  };
+
+  const setNextTimePicker = (date) => {
+    try {
+      setBookStart(dayjs(date.$d).format());
+      if (bookStartPicker === true) {
+        setBookStartPicker(false);
+        setBookEndPicker(true);
+      } else {
+        setBookEndPicker(false);
+      }
+    } catch (error) {
+      setBookStartPicker(true);
+      const startEndDate = bookStartPicker ? "start" : "end";
+      alert(`Please select a ${startEndDate} date and time.`);
+    }
+  };
+
+  const resetTimePickers = () => {
+    setBookStart(null);
+    setBookEnd(null);
+    setBookEndPicker(false);
+    setBookStartPicker(false);
   };
 
   return (
     <div style={{ height: "100vh", width: "100%" }}>
       {!!checkCar && (
         <div className="rentCard" style={{ position: "absolute", zIndex: 2 }}>
-          <Card sx={{ maxWidth: "100%", maxHeight: 320 }}>
+          <Card sx={{ width: "fit-content", borderRadius: 2 }}>
             <CloseIcon
               onClick={exitPopup}
               onChange={exitPopup}
@@ -214,14 +243,12 @@ export default function SimpleMap() {
               image={carImage}
               title="car"
             />
-            <CardContent
-              style={{ height: "30vh", width: "100%", alignItems: "center" }}
-            >
+            <CardContent style={{ alignItems: "center" }}>
               <Typography
                 gutterBottom
                 variant="h5"
                 component="div"
-                style={{ width: "100%", fontSize: 15, paddingRight: "50%" }}
+                style={{ fontSize: 15 }}
               >
                 {carDetails.name}
               </Typography>
@@ -229,13 +256,13 @@ export default function SimpleMap() {
                 <Typography
                   variant="body2"
                   color="text.secondary"
-                  style={{ fontSize: 10, paddingRight: "15%" }}
+                  style={{ fontSize: 10 }}
                 >
                   {key}: {carDetails.details[key]}
                 </Typography>
               ))}
             </CardContent>
-            <CardActions>
+            <CardActions style={{ justifyContent: "center" }}>
               <Button
                 size="small"
                 onClick={rentCar}
@@ -260,7 +287,7 @@ export default function SimpleMap() {
         <Card
           sx={{
             maxWidth: "100%",
-            maxHeight: 320,
+            maxHeight: "fit-content",
             position: "absolute",
             zIndex: 3,
             alignItems: "center",
@@ -271,57 +298,82 @@ export default function SimpleMap() {
             <div
               style={{ height: "100%", width: "100%", alignItems: "center" }}
             >
-              {!!nextButton && (
-                <Button
-                  variant="contained"
-                  onClick={setNextTimePicker}
-                  onChange={setNextTimePicker}
-                  style={{
-                    position: "absolute",
-                    zIndex: 4,
-                    left: 50,
-                    bottom: 20,
-                  }}
-                >
-                  Next
-                </Button>
-              )}
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <StaticDateTimePicker
                   disablePast
-                  label="Small picker"
-                  slotProps={{ textField: { size: "small" } }}
+                  label="Picker with helper text"
                   orientation="portrait"
                   onChange={setStartDate}
                   style={{ height: "60%", width: "60%" }}
+                  onAccept={(date) => setNextTimePicker(date)}
+                  slotProps={{
+                    textField: { size: "small", text: "Test" },
+                    tabs: {
+                      hidden: false,
+                    },
+                    actionBar: {
+                      actions: ["accept"],
+                    },
+                  }}
                 />
               </LocalizationProvider>
+              <Button
+                variant="text"
+                style={{
+                  position: "absolute",
+                  width: "20%",
+                  height: "5vh",
+                  fontSize: 14,
+                  zIndex: 2,
+                  right: "25%",
+                  bottom: "1.5%",
+                }}
+                onClick={resetTimePickers}
+                onChange={resetTimePickers}
+              >
+                CANCEL
+              </Button>
             </div>
           )}
           {!!bookEndPicker && (
-            <div>
-              {!!nextButton && (
-                <Button
-                  variant="contained"
-                  onClick={setNextTimePicker}
-                  onChange={setNextTimePicker}
-                  style={{
-                    position: "absolute",
-                    zIndex: 4,
-                    left: 50,
-                    bottom: 20,
-                  }}
-                >
-                  Book
-                </Button>
-              )}
+            <div
+              style={{ height: "100%", width: "100%", alignItems: "center" }}
+            >
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <StaticDateTimePicker
                   disablePast
+                  label="Picker with helper text"
                   orientation="portrait"
                   onChange={setStartDate}
+                  style={{ height: "60%", width: "60%" }}
+                  onAccept={(date) => setNextTimePicker(date)}
+                  slotProps={{
+                    textField: { size: "small", text: "Test" },
+                    tabs: {
+                      hidden: false,
+                    },
+                    actionBar: {
+                      actions: ["accept"],
+                    },
+                  }}
                 />
               </LocalizationProvider>
+              <Button
+                variant="text"
+                style={{
+                  position: "absolute",
+                  width: "20%",
+                  height: "5vh",
+                  fontSize: 14,
+                  zIndex: 2,
+                  right: "25%",
+                  bottom: "1.5%",
+                }}
+                onClick={resetTimePickers}
+                onChange={resetTimePickers}
+              >
+                CANCEL
+              </Button>
             </div>
           )}
         </Card>
@@ -360,7 +412,12 @@ export default function SimpleMap() {
           <RoutingMachine
             initialCoords={markers[0]}
             destinationCoords={markers[1]}
-            style={{ width: "60%", height: "60vh", zIndex: 1 }}
+            style={{
+              width: "60%",
+              height: "60vh",
+              zIndex: 1,
+              backgroundColor: "rgba(255, 255, 255, 0.4)",
+            }}
           />
         )}
       </MapContainer>
