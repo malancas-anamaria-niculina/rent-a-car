@@ -4,6 +4,7 @@ import Map from "./components/Map";
 import DashboardWrapper from "./components/DashboardWrapper";
 import PrivateRoutes from "./utils/PrivateRoutes";
 import Login from "./pages/Login/Login";
+import CarActivity from "./components/CarActivity"
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
             <Route exact path="/dashboard" element={<Map />} />
           </Route>
         </Route>
+        <Route path="/carHistory" element={<CarActivity />} />
       </Routes>
     </div>
   );

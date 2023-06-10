@@ -53,6 +53,7 @@ export default function SimpleMap() {
   const [bookStart, setBookStart] = useState(null);
   const [bookEnd, setBookEnd] = useState(null);
   const [rent, setRent] = useState(false);
+  const [selectedMarkerData, setSelectedMarkerData] = useState(null);
 
   // menu
   const [open, setOpen] = useState(false);
@@ -124,7 +125,7 @@ export default function SimpleMap() {
       Fuel: "full",
       "Price/hour": "40 lei",
       Transition: "Automatic",
-      Acceleration: "0-150 km/h",
+      Odometer: "0-150 km/h",
       Location: "str",
       Status: "Available",
     },
@@ -208,6 +209,7 @@ export default function SimpleMap() {
               if (index > 0) {
                 setCheckCar(true);
                 setMarkerState(event);
+                setSelectedMarkerData(marker);
               }
             },
             mouseover: (event) => {
@@ -493,7 +495,7 @@ export default function SimpleMap() {
         {!!rent && (
           <RoutingMachine
             initialCoords={markerData[0]}
-            destinationCoords={markers[1]}
+            destinationCoords={selectedMarkerData}
             style={{
               width: "60%",
               height: "60vh",
