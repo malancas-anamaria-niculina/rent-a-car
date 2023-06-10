@@ -1,4 +1,4 @@
-import L from "leaflet";
+import L, { marker } from "leaflet";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -19,36 +19,34 @@ import "leaflet-routing-machine";
 import RoutingMachine from "./RoutingControl";
 import { addDays, format } from "date-fns";
 import dayjs from "dayjs";
-import ClickAwayListener from '@mui/material/ClickAwayListener';
-import Grow from '@mui/material/Grow';
-import Paper from '@mui/material/Paper';
-import Popper from '@mui/material/Popper';
-import MenuItem from '@mui/material/MenuItem';
-import MenuList from '@mui/material/MenuList';
-import Stack from '@mui/material/Stack';
+import ClickAwayListener from "@mui/material/ClickAwayListener";
+import Grow from "@mui/material/Grow";
+import Paper from "@mui/material/Paper";
+import Popper from "@mui/material/Popper";
+import MenuItem from "@mui/material/MenuItem";
+import MenuList from "@mui/material/MenuList";
+import Stack from "@mui/material/Stack";
 
-delete L.Icon.Default.prototype._getIconUrl;
+// Marker image imports
+import yellowMapMarker from "../static/images/yellowMapMarker.png";
+import markerShadow from "../static/images/markerShadow.png";
+import userMarker from "../static/images/userMarker.png";
+
+// delete L.Icon.Default.prototype._getIconUrl;
 
 L.Icon.Default.mergeOptions({
-  iconRetinaUrl: require("leaflet/dist/images/marker-icon.png"),
-  iconUrl: require("leaflet/dist/images/marker-icon.png"),
+  iconRetinaUrl: yellowMapMarker,
+  iconUrl: yellowMapMarker,
   shadowUrl: require("leaflet/dist/images/marker-shadow.png"),
 });
 
 export default function SimpleMap() {
-  const pastMonth = new Date(2023, 5, 9);
   // const date = new Date();
   // console.log(dayjs(new Date(dayjs(date).format())).format('DD/MM/YYYY'));
-  const defaultSelected = {
-    from: pastMonth,
-    to: addDays(pastMonth, 4),
-  };
   const ref = useRef(null);
+  const [markerData, setMarkerData] = useState([]);
   const [markerState, setMarkerState] = useState(null);
-  const [currentError, setCurrentError] = useState(null);
-  const [errorDate, setErrorDate] = useState(false);
   const [checkCar, setCheckCar] = useState(false);
-  const [nextButton, setNextButton] = useState(false);
   const [bookState, setBookState] = useState(false);
   const [bookStartPicker, setBookStartPicker] = useState(false);
   const [bookEndPicker, setBookEndPicker] = useState(false);
@@ -73,10 +71,10 @@ export default function SimpleMap() {
   };
 
   function handleListKeyDown(event) {
-    if (event.key === 'Tab') {
+    if (event.key === "Tab") {
       event.preventDefault();
       setOpen(false);
-    } else if (event.key === 'Escape') {
+    } else if (event.key === "Escape") {
       setOpen(false);
     }
   }
@@ -84,6 +82,12 @@ export default function SimpleMap() {
   // return focus to the button when we transitioned from !open -> open
   const prevOpen = useRef(open);
   useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(success, error);
+    } else {
+      console.log("Geolocation not supported");
+    }
+
     if (prevOpen.current === true && open === false) {
       anchorRef.current.focus();
     }
@@ -91,48 +95,27 @@ export default function SimpleMap() {
     prevOpen.current = open;
   }, [open]);
 
-
-  var yellowIcon = L.icon({
-    shadowUrl: require("leaflet/dist/images/marker-shadow.png"),
-    iconRetinaUrl: require("./yellow-map-marker.png"),
-    iconUrl: require("./yellow-map-marker.png"),
-    iconSize: [38, 95], // size of the icon
-    shadowSize: [50, 64], // size of the shadow
-    iconAnchor: [22, 94], // point of the icon which will correspond to marker's location
-    shadowAnchor: [4, 62], // the same for the shadow
-    popupAnchor: [-3, -76], // point from which the popup should open relative to the iconAnchor
-  });
-  var blueIcon = L.icon({
-    shadowUrl: require("leaflet/dist/images/marker-shadow.png"),
-    iconRetinaUrl: require("leaflet/dist/images/marker-icon.png"),
-    iconUrl: require("leaflet/dist/images/marker-icon.png"),
-    iconSize: [38, 95], // size of the icon
-    shadowSize: [50, 64], // size of the shadow
-    iconAnchor: [22, 94], // point of the icon which will correspond to marker's location
-    shadowAnchor: [4, 62], // the same for the shadow
-    popupAnchor: [-3, -76], // point from which the popup should open relative to the iconAnchor
-  });
   const markers = [
     [46.773541, 23.62203],
     [46.771774, 23.62483],
   ];
-  const defaultProps = {
-    center: [
-      {
-        lat: 46.771774,
-        lng: 23.62483,
-      },
-      {
-        lat: 46.773541,
-        lng: 23.62203,
-      },
-    ],
-    zoom: 11,
+  const success = (position) => {
+    const latitude = position.coords.latitude;
+    const longitude = position.coords.longitude;
+    const userPosition = [latitude, longitude];
+
+    const markerArray = [userPosition, ...markers];
+    console.log("Marker array", markerArray);
+    setMarkerData(markerArray);
+    console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
+
+    console.log(markerData);
   };
-  const destination = {
-    lat: 46.769023,
-    lng: 23.629473,
+
+  const error = () => {
+    console.log("Unable to retrieve your location");
   };
+
   const carDetails = {
     name: "Hyundai Grand i10 Nios",
     details: {
@@ -173,15 +156,13 @@ export default function SimpleMap() {
 
     var newIcon = L.Icon.extend({
       options: {
-        shadowUrl: require("leaflet/dist/images/marker-shadow.png"),
-        iconRetinaUrl: require("./yellow-map-marker.png"),
-        iconUrl: require("./yellow-map-marker.png"),
+        shadowUrl: markerShadow,
+        iconRetinaUrl: yellowMapMarker,
+        iconUrl: yellowMapMarker,
       },
     });
     // require('leaflet/dist/images/marker-icon.png')
-    markerState.target.setIcon(
-      new newIcon({ iconUrl: require("./yellow-map-marker.png") })
-    );
+    markerState.target.setIcon(new newIcon({ iconUrl: yellowMapMarker }));
   };
 
   const exitNavigation = () => {
@@ -198,16 +179,29 @@ export default function SimpleMap() {
         data[0],
         data[index]
       )}`;
+      const iconColor = index == 0 ? userMarker : yellowMapMarker;
       if (bookStart != null && bookEnd != null) {
         markerMsg += `<\br> ${bookStart} <\br> ${bookEnd}`;
       }
       if (index === 0) {
         markerMsg = "You are here";
       }
+
+      const icon = L.icon({
+        shadowUrl: markerShadow,
+        iconRetinaUrl: iconColor,
+        iconUrl: iconColor,
+        iconSize: [20, 30], // size of the icon
+        shadowSize: [50, 64], // size of the shadow
+        iconAnchor: [10, 30], // point of the icon which will correspond to marker's location
+        shadowAnchor: [17, 65], // the same for the shadow
+        popupAnchor: [-3, -76], // point from which the popup should open relative to the iconAnchor
+      });
       return (
         <Marker
           key={index}
           position={marker}
+          icon={icon}
           ref={ref}
           eventHandlers={{
             click: (event) => {
@@ -268,7 +262,7 @@ export default function SimpleMap() {
 
   return (
     <div style={{ height: "100vh", width: "100%" }}>
-      <div style={{ position: "absolute", zIndex: 4, top: '2%', right: '2%' }}>
+      <div style={{ position: "absolute", zIndex: 4, top: "2%", right: "2%" }}>
         <Button
           ref={anchorRef}
           id="composition-button"
@@ -495,10 +489,10 @@ export default function SimpleMap() {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        <MyMarkers data={markers} />
+        <MyMarkers data={markerData} />
         {!!rent && (
           <RoutingMachine
-            initialCoords={markers[0]}
+            initialCoords={markerData[0]}
             destinationCoords={markers[1]}
             style={{
               width: "60%",
