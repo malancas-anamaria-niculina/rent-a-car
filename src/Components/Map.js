@@ -261,7 +261,7 @@ export default function SimpleMap() {
   };
 
   return (
-    <div style={{ height: "100vh", width: "100%" }}>
+    <div style={{ height: "100%", width: "100%" }}>
       <div style={{ position: "absolute", zIndex: 4, top: "2%", right: "2%" }}>
         <Button
           ref={anchorRef}
