@@ -268,7 +268,9 @@ export default function SimpleMap() {
           }}
         >
           {!!bookStartPicker && (
-            <div style={{ height: "100%", width: "100%", alignItems: "center" }}>
+            <div
+              style={{ height: "100%", width: "100%", alignItems: "center" }}
+            >
               {!!nextButton && (
                 <Button
                   variant="contained"
@@ -288,7 +290,7 @@ export default function SimpleMap() {
                 <StaticDateTimePicker
                   disablePast
                   label="Small picker"
-                  slotProps={{ textField: { size: 'small' } }}
+                  slotProps={{ textField: { size: "small" } }}
                   orientation="portrait"
                   onChange={setStartDate}
                   style={{ height: "60%", width: "60%" }}
