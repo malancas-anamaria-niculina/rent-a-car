@@ -1,25 +1,25 @@
-import Box from '@mui/material/Box';
-import Collapse from '@mui/material/Collapse';
-import IconButton from '@mui/material/IconButton';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Typography from '@mui/material/Typography';
-import Paper from '@mui/material/Paper';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import { useState } from 'react';
+import Box from "@mui/material/Box";
+import Collapse from "@mui/material/Collapse";
+import IconButton from "@mui/material/IconButton";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Typography from "@mui/material/Typography";
+import Paper from "@mui/material/Paper";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import { useState, useContext, useEffect } from "react";
+import CarsContext from "../contexts/CarsContext";
 
-const Row = ({key, row}) => {
+const Row = ({ key, row }) => {
   const [open, setOpen] = useState(false);
-  console.log('Row', row);
 
   return (
     <>
-      <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
+      <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
         <TableCell>
           <IconButton
             aria-label="expand row"
@@ -62,8 +62,12 @@ const Row = ({key, row}) => {
                       </TableCell>
                       <TableCell>{historyRow.rentalEndDate}</TableCell>
                       <TableCell>{historyRow.pricePerHour}</TableCell>
-                      <TableCell align="right">{historyRow.totalRentingHours}</TableCell>
-                      <TableCell align="right">{historyRow.totalCost}</TableCell>
+                      <TableCell align="right">
+                        {historyRow.totalRentingHours}
+                      </TableCell>
+                      <TableCell align="right">
+                        {historyRow.totalCost}
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -74,39 +78,16 @@ const Row = ({key, row}) => {
       </TableRow>
     </>
   );
-}
+};
 
 export default function CarActivity() {
-    function createData(model, carType, odometer, year, availability, price) {
-        return {
-            model,
-            carType,
-            odometer,
-            year,
-            availability,
-          history: [
-            {
-                rentalStartDate:  "2023-06-10T21:20:59.432794",
-                rentalEndDate:  "2023-06-10T21:21:10.680274",
-                pricePerHour: price,
-                totalRentingHours: 0.0031,
-                totalCost: 0.123
-            },
-            {
-                rentalStartDate:  "2023-06-10T21:20:59.432794",
-                rentalEndDate:  "2023-06-10T21:21:10.680274",
-                pricePerHour: price,
-                totalRentingHours: 0.0031,
-                totalCost: 0.123
-            },
-          ],
-        };
-      }
+  const { carHistory, handleCarsActivity } = useContext(CarsContext);
 
-    const rows = [
-        createData('Hyundai Grand i10 Nios', 'Budget', 150, 2022, 'Available', 40),
-        createData('Hyundai Grand i10', 'Budget', 150, 2022, 'Available', 40),
-      ];
+  useEffect(() => {
+    handleCarsActivity();
+  }, []);
+
+  const rows = [carHistory];
 
   return (
     <TableContainer component={Paper}>
@@ -122,7 +103,9 @@ export default function CarActivity() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (<Row key={row.model} row={row} />))}
+          {rows.map((row) => (
+            <Row key={row.model} row={row} />
+          ))}
         </TableBody>
       </Table>
     </TableContainer>

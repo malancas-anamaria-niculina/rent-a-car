@@ -17,7 +17,7 @@ const UserProvider = ({ children }) => {
   const handleRegister = async (userData) => {
     try {
       const { isSuccess } = await registerUser(userData);
-      setUser({...user, isCreated: isSuccess });
+      setUser({ ...user, isCreated: isSuccess });
     } catch (error) {
       setUser({
         ...initialUser,
