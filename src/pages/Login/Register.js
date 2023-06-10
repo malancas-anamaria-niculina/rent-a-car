@@ -15,30 +15,40 @@ import { Stack, FormControl } from "@mui/material";
 import { Navigate, useNavigate } from "react-router-dom";
 import UserContext from "../../contexts/UserContext";
 
-const LoginPage = () => {
+const RegisterPage = () => {
   const navigate = useNavigate();
   const {
-    handleLogin,
-    user: { token, error },
+    handleRegister,
+    user: { token, error, isCreated },
   } = useContext(UserContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
+  };
+
+  const handleUsernameChange = (event) => {
+    setUsername(event.target.value);
   };
 
   const handlePasswordChange = (event) => {
     setPassword(event.target.value);
   };
 
-  const handleFormSubmit = async (event) => {
-    event.preventDefault();
-    await handleLogin({ email, password });
+  const handleConfirmPasswordChange = (event) => {
+    setConfirmPassword(event.target.value);
   };
 
-  if (token) {
-    return <Navigate replace to="/dashboard" />;
+  const handleFormSubmit = async (event) => {
+    event.preventDefault();
+    await handleRegister({ email, password, username, confirmPassword });
+  };
+
+  if (token || isCreated) {
+    return <Navigate replace to="/" />;
   }
 
   return (
@@ -50,9 +60,9 @@ const LoginPage = () => {
           </LogoHeader>
         </LoginStack>
         <LoginStack spacing={1} textAlign="left">
-          <LoginHeader component="div">Login</LoginHeader>
+          <LoginHeader component="div">Register</LoginHeader>
           <LoginSubHeader component="div">
-            Please log in to access your system
+            Create a new account to access the system!
           </LoginSubHeader>
         </LoginStack>
         <form
@@ -73,6 +83,21 @@ const LoginPage = () => {
             </FormControl>
             <FormControl>
               <LoginInputLabel
+                htmlFor="username"
+                shrink={true}
+                variant="standard"
+              >
+                Username
+              </LoginInputLabel>
+              <LoginInput
+                id="username"
+                placeholder={"Enter your username"}
+                onChange={handleUsernameChange}
+                disableUnderline
+              />
+            </FormControl>
+            <FormControl>
+              <LoginInputLabel
                 htmlFor="password"
                 shrink={true}
                 variant="standard"
@@ -83,6 +108,22 @@ const LoginPage = () => {
                 id="password"
                 placeholder={"Enter your desired password"}
                 onChange={handlePasswordChange}
+                type="password"
+                disableUnderline
+              />
+            </FormControl>
+            <FormControl>
+              <LoginInputLabel
+                htmlFor="confirmpassword"
+                shrink={true}
+                variant="standard"
+              >
+                Confirm Password
+              </LoginInputLabel>
+              <LoginInput
+                id="confirmpassword"
+                placeholder={"Reenter your desired password"}
+                onChange={handleConfirmPasswordChange}
                 type="password"
                 disableUnderline
               />
@@ -105,7 +146,7 @@ const LoginPage = () => {
               fullWidth
               type="submit"
             >
-              Log in
+              Register
             </SubmitButton>
             <ForgotLink
               component="div"
@@ -113,9 +154,9 @@ const LoginPage = () => {
                 display: { xs: "none", md: "flex" },
                 justifyContent: "flex-end",
               }}
-              onClick={() => navigate("/register")}
+              onClick={() => navigate("/")}
             >
-              Don't have an account? Register here!
+              Already have an account? Log in here!
             </ForgotLink>
           </LoginStack>
         </form>
@@ -124,4 +165,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default RegisterPage;

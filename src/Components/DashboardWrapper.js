@@ -1,13 +1,74 @@
 import React from "react";
-import { AppBar, Toolbar, Typography } from "@mui/material";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
+  Link,
+  Stack,
+} from "@mui/material";
+import {
+  ElectricCar,
+  MapRounded,
+  LocalActivityRounded,
+  CarRentalRounded,
+  SettingsRounded,
+} from "@mui/icons-material";
 import { Outlet } from "react-router-dom";
 
-const DashboardWrapper = ({ children }) => {
+const DashboardWrapper = () => {
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
-      <AppBar position="static" style={{ backgroundColor: "transparent" }}>
-        <Toolbar>
-          <Typography variant="h6">Dashboard</Typography>
+      <AppBar
+        position="static"
+        style={{ backgroundColor: "transparent", color: "#000" }}
+      >
+        <Toolbar style={{ justifyContent: "space-between" }}>
+          <Typography
+            variant="h5"
+            component="div"
+            style={{ display: "flex", alignItems: "center", gap: 8 }}
+          >
+            <ElectricCar /> Rent a Car
+          </Typography>
+          <Stack flexDirection="row">
+            <Button
+              color="inherit"
+              component={Link}
+              to="/dashboard"
+              style={{ gap: 4 }}
+            >
+              <MapRounded />
+              Map
+            </Button>
+            <Button
+              color="inherit"
+              component={Link}
+              to="/dashboard/user-activity"
+              style={{ gap: 4 }}
+            >
+              <LocalActivityRounded />
+              User Activity
+            </Button>
+            <Button
+              color="inherit"
+              component={Link}
+              to="/dashboard/user-activity"
+              style={{ gap: 4 }}
+            >
+              <CarRentalRounded />
+              Planned Activity
+            </Button>
+            <Button
+              color="inherit"
+              component={Link}
+              to="/dashboard/settings"
+              style={{ gap: 4 }}
+            >
+              <SettingsRounded />
+              Settings
+            </Button>
+          </Stack>
         </Toolbar>
       </AppBar>
       <div style={{ flex: 1, padding: "20px 40px" }}>

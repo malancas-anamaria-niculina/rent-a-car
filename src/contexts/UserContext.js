@@ -9,16 +9,21 @@ const UserProvider = ({ children }) => {
     name: "",
     email: "",
     token: "",
+    isCreated: false,
     error: "",
   };
   const [user, setUser] = useState(initialUser);
 
   const handleRegister = async (userData) => {
     try {
-      const registredUser = await registerUser(userData);
-      console.log(registerUser);
-      setUser(registredUser);
+      const { isSuccess } = await registerUser(userData);
+      setUser({...user, isCreated: isSuccess });
     } catch (error) {
+      setUser({
+        ...initialUser,
+        error:
+          error.message || "There is something word with the registration!",
+      });
       console.error("Registration failed: ", error.message);
     }
   };

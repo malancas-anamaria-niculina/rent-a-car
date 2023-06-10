@@ -265,16 +265,6 @@ export default function SimpleMap() {
   return (
     <div style={{ height: "100%", width: "100%" }}>
       <div style={{ position: "absolute", zIndex: 4, top: "2%", right: "2%" }}>
-        <Button
-          ref={anchorRef}
-          id="composition-button"
-          aria-controls={open ? "composition-menu" : undefined}
-          aria-expanded={open ? "true" : undefined}
-          aria-haspopup="true"
-          onClick={handleToggle}
-        >
-          Menu
-        </Button>
         <Popper
           open={open}
           anchorEl={anchorRef.current}
