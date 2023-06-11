@@ -113,7 +113,9 @@ export default function PlannedActivity() {
   return (
     <>
       {!activity.isData && (
-        <Alert severity="info">You don't have planned activities!</Alert>
+        <Alert id="no-planned-activities" severity="info">
+          You don't have planned activities!
+        </Alert>
       )}
       {activity.isData && (
         <List
