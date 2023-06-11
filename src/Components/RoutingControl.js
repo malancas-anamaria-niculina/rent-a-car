@@ -11,15 +11,7 @@ const createRoutineMachineLayer = (props) => {
     lineOptions: {
       styles: [{ color: "red", weight: 4 }],
     },
-    show: false,
-    addWaypoints: false,
-    routeWhileDragging: true,
-    draggableWaypoints: true,
-    fitSelectedRoutes: true,
-    showAlternatives: false,
-    createMarker: function () {
-      return null;
-    },
+    show: true,
   });
 
   return instance;

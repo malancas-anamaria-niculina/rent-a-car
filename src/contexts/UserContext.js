@@ -17,7 +17,7 @@ const UserProvider = ({ children }) => {
   const handleRegister = async (userData) => {
     try {
       const { isSuccess } = await registerUser(userData);
-      setUser({...user, isCreated: isSuccess });
+      setUser({ ...user, isCreated: isSuccess });
     } catch (error) {
       setUser({
         ...initialUser,
@@ -31,7 +31,7 @@ const UserProvider = ({ children }) => {
   const handleLogin = async (credentials) => {
     try {
       const { message: token, isSuccess, owner } = await loginUser(credentials);
-      console.log(token, isSuccess, owner);
+      localStorage.setItem("userToken", token);
       setUser({ ...user, token });
     } catch (error) {
       setUser({

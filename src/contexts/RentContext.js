@@ -1,5 +1,6 @@
 import { createContext, useState } from "react";
 import { rentACar, bookACar } from "../config/rentApi";
+import { getAllCars } from "../config/carsApi";
 
 const RentContext = createContext();
 
@@ -12,6 +13,21 @@ const RentProvider = ({ children }) => {
     error: "",
   };
   const [rentData, setRentData] = useState(initialRentData);
+
+  const handleGetCars = async () => {
+    try {
+      const { cars } = await getAllCars();
+      console.log(cars);
+      setRentData({ ...rentData, cars });
+    } catch (error) {
+      setRentData({
+        ...initialRentData,
+        error:
+          error.message || "There is something wrong with the cars getting",
+      });
+      console.error("Cars getting failed: ", error.message);
+    }
+  };
 
   const handleRent = async (carId) => {
     try {
@@ -49,6 +65,7 @@ const RentProvider = ({ children }) => {
     rentData,
     handleRent,
     handleBook,
+    handleGetCars,
   };
 
   return (

@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "./axiosConfig";
 
 const BASE_URL = "https://localhost:7265/api/rent";
 

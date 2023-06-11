@@ -7,9 +7,11 @@ const PrivateRoutes = () => {
     user: { token },
   } = useContext(UserContext);
 
-  console.log("Token: ", token);
-
-  return token ? <Outlet /> : <Navigate replace to="/" />;
+  return token || localStorage.getItem("userToken") ? (
+    <Outlet />
+  ) : (
+    <Navigate replace to="/" />
+  );
 };
 
 export default PrivateRoutes;
