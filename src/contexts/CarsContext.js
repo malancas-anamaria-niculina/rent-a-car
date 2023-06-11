@@ -6,11 +6,13 @@ const CarsContext = createContext();
 
 const CarsProvider = ({ children }) => {
   const initialCar = {
+    isData: false,
     model: "",
     carType: "",
     odometer: null,
     year: null,
     availability: "",
+    user: null,
     history: [
       {
         rentalStartDate: "",
@@ -28,8 +30,9 @@ const CarsProvider = ({ children }) => {
     try {
       const carData = await carsHistory(carId);
       setCarHistory({
+        isData: true,
         model: carData.rentingEvents[0].car.model,
-        carType: carData.rentingEvents[0].car.type,
+        carType: carData.rentingEvents[0].car.carType.type,
         odometer: `${carData.rentingEvents[0].car.odometer} km`,
         year: carData.rentingEvents[0].car.year,
         availability:
@@ -37,7 +40,7 @@ const CarsProvider = ({ children }) => {
             ? "Available"
             : "Not available",
         history: carData.rentingEvents.map((rentingEvent) => ({
-          user: rentingEvent.car.owner.userName,
+          user: rentingEvent.owner.userName,
           rentalStartHour: dayjs(rentingEvent.rentalStartDate).format(
             "HH:mm:ss"
           ),
@@ -46,9 +49,9 @@ const CarsProvider = ({ children }) => {
             "YYYY-MM-DD"
           ),
           rentalEndDate: dayjs(rentingEvent.rentalEndDate).format("YYYY-MM-DD"),
-          pricePerHour: `${rentingEvent.pricePerHour} lei`,
+          pricePerHour: `${rentingEvent.pricePerHour} RON`,
           estimatedRentingHours: rentingEvent.totalRentingHours.toPrecision(1),
-          estimatedCost: `${rentingEvent.totalCost.toPrecision(3)} lei`,
+          estimatedCost: `${rentingEvent.totalCost.toPrecision(3)} RON`,
         })),
       });
     } catch (error) {

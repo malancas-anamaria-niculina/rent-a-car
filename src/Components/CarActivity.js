@@ -14,6 +14,7 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { useState, useContext, useEffect } from "react";
 import CarsContext from "../contexts/CarsContext";
 import { useLocation } from "react-router-dom";
+import Alert from "@mui/material/Alert";
 
 const Row = ({ row }) => {
   const [open, setOpen] = useState(false);
@@ -96,22 +97,29 @@ export default function CarActivity() {
   }, []);
 
   return (
-    <TableContainer component={Paper}>
-      <Table aria-label="collapsible table">
-        <TableHead>
-          <TableRow>
-            <TableCell />
-            <TableCell>Car name</TableCell>
-            <TableCell align="right">Type</TableCell>
-            <TableCell align="right">Odometer</TableCell>
-            <TableCell align="right">Year</TableCell>
-            <TableCell align="right">Availability</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          <Row key="1" row={carHistory} />
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <>
+      {!carHistory.isData && (
+        <Alert severity="info">The car was not rented before!</Alert>
+      )}
+      {carHistory.isData && (
+        <TableContainer component={Paper}>
+          <Table aria-label="collapsible table">
+            <TableHead>
+              <TableRow>
+                <TableCell />
+                <TableCell>Car name</TableCell>
+                <TableCell align="right">Type</TableCell>
+                <TableCell align="right">Odometer</TableCell>
+                <TableCell align="right">Year</TableCell>
+                <TableCell align="right">Availability</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              <Row key="1" row={carHistory} />
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )}
+    </>
   );
 }

@@ -112,14 +112,14 @@ export default function PlannedActivity() {
 
   return (
     <>
-      {!activity.filter((act) => act.isData) && (
+      {!activity.isData && (
         <Alert severity="info">You don't have planned activities!</Alert>
       )}
-      {!!activity.length && (
+      {activity.isData && (
         <List
           sx={{ width: "100%", maxWidth: "100%", bgcolor: "background.paper" }}
         >
-          {activity.map((rentAtivity, index) => (
+          {activity.car.map((rentAtivity, index) => (
             <ActivityRow key={index} activity={rentAtivity}></ActivityRow>
           ))}
         </List>

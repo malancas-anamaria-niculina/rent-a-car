@@ -85,7 +85,6 @@ const Row = ({ row }) => {
 };
 
 export default function PastActivity() {
-  const data = useContext(ActivityContext);
   const { activity, handlePastActivity } = useContext(ActivityContext);
 
   useEffect(() => {
@@ -94,10 +93,10 @@ export default function PastActivity() {
 
   return (
     <>
-      {!activity && (
+      {!!!activity.isData && (
         <Alert severity="info">You don't have past activities!</Alert>
       )}
-      {activity && (
+      {activity.isData && (
         <TableContainer component={Paper}>
           <Table aria-label="collapsible table">
             <TableHead>
@@ -110,7 +109,7 @@ export default function PastActivity() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {activity.map((row, index) => (
+              {activity.car.map((row, index) => (
                 <Row key={index} row={row} />
               ))}
             </TableBody>
