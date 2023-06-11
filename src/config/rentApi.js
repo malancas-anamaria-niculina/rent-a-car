@@ -4,7 +4,7 @@ const BASE_URL = "https://localhost:7265/api/rent";
 
 const rentApi = axios.create({
   baseURL: BASE_URL,
-  headers: { Authorization: `Bearer ${localStorage.getItem("userToken")}` }
+  headers: { Authorization: `Bearer ${localStorage.getItem("userToken")}` },
 });
 
 const bookACar = async (bookData) => {
@@ -25,4 +25,13 @@ const rentACar = async (carId) => {
   }
 };
 
-export { bookACar, rentACar };
+const finishRent = async (carId) => {
+  try {
+    const response = await rentApi.post(`/${carId}/finish`);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response.data.message);
+  }
+};
+
+export { bookACar, rentACar, finishRent };

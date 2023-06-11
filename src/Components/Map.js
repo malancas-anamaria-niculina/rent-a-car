@@ -26,6 +26,8 @@ import markerShadow from "../static/images/markerShadow.png";
 import userMarker from "../static/images/userMarker.png";
 
 import RentContext from "../contexts/RentContext";
+import UserContext from "../contexts/UserContext";
+import MarkerMessage from "./MarkerMessage";
 
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: yellowMapMarker,
@@ -40,7 +42,9 @@ export default function SimpleMap() {
   const {
     rentData: { cars },
     handleGetCars,
+    handleFinish,
   } = useContext(RentContext);
+  const { user } = useContext(UserContext);
   const [markerData, setMarkerData] = useState([]);
   const [userPosition, setUserPosition] = useState([]);
   const [markerState, setMarkerState] = useState(null);
@@ -122,8 +126,21 @@ export default function SimpleMap() {
         }
 
         if (marker[2] && !marker[2].isAvailable) {
+          console.log("Marker2", marker[2]);
           markerMsg =
             "This car is not available to rent or it's already booked!";
+
+          if (marker[2].ownerId === user.id) {
+            markerMsg = (
+              <MarkerMessage
+                textFirst="Rent details"
+                textSecond="Finish rent"
+                actionFirst={() => console.log("rent details")}
+                actionSecond={handleFinish}
+                dataSecond={marker[2].id}
+              />
+            );
+          }
         }
 
         const icon = L.icon({
@@ -134,7 +151,7 @@ export default function SimpleMap() {
           shadowSize: [50, 64], // size of the shadow
           iconAnchor: [10, 30], // point of the icon which will correspond to marker's location
           shadowAnchor: [17, 65], // the same for the shadow
-          popupAnchor: [-3, -76], // point from which the popup should open relative to the iconAnchor
+          popupAnchor: [0, -35], // point from which the popup should open relative to the iconAnchor
         });
         return (
           <Marker
@@ -144,7 +161,7 @@ export default function SimpleMap() {
             ref={ref}
             eventHandlers={{
               click: (event) => {
-                if (index > 0) {
+                if (index > 0 && marker[2].isAvailable) {
                   setCheckCar(true);
                   setMarkerState(event);
                   setSelectedMarkerData(marker);
@@ -152,9 +169,6 @@ export default function SimpleMap() {
               },
               mouseover: (event) => {
                 event.target.openPopup();
-              },
-              mouseout: (event) => {
-                event.target.closePopup();
               },
             }}
           >
@@ -306,7 +320,9 @@ export default function SimpleMap() {
           )}
         </Card>
       )}
-      {!!rent && <NavigationControl setRent={setRent} car={selectedMarkerData[2]}/>}
+      {!!rent && (
+        <NavigationControl setRent={setRent} car={selectedMarkerData[2]} />
+      )}
       <MapContainer
         center={[46.771774, 23.62483]}
         zoom={13}

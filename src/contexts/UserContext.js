@@ -30,9 +30,9 @@ const UserProvider = ({ children }) => {
 
   const handleLogin = async (credentials) => {
     try {
-      const { message: token, isSuccess, owner } = await loginUser(credentials);
+      const { message: token, owner } = await loginUser(credentials);
       localStorage.setItem("userToken", token);
-      setUser({ ...user, token });
+      setUser({ ...user, token, ...owner });
     } catch (error) {
       setUser({
         ...initialUser,
