@@ -33,7 +33,7 @@ const ActivityProvider = ({ children }) => {
       setActivity(
         activityData.rentingEvents.map((plannedEvent) => ({
           model: plannedEvent.car.model,
-          carType: plannedEvent.car.carType,
+          carType: plannedEvent.car.carType.type,
           odometer: `${plannedEvent.car.odometer} km`,
           year: plannedEvent.car.year,
           activity: [
@@ -87,7 +87,7 @@ const ActivityProvider = ({ children }) => {
         activityData.rentingEvents
           .map((plannedEvent) => ({
             model: plannedEvent.car.model,
-            carType: plannedEvent.car.carType,
+            carType: plannedEvent.car.carType.type,
             odometer: `${plannedEvent.car.odometer} km`,
             year: plannedEvent.car.year,
             activity: hashmap[plannedEvent.carId],
