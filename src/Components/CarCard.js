@@ -61,7 +61,7 @@ const CarCard = ({ setCheckCar, marker, rentCar, bookCar }) => {
             color="text.secondary"
             style={{ fontSize: 12 }}
           >
-            Odometer: {marker[2]["odomoter"]}
+            Odometer: {marker[2].odometer}km
           </Typography>
           <Typography
             variant="body2"
@@ -100,7 +100,7 @@ const CarCard = ({ setCheckCar, marker, rentCar, bookCar }) => {
           <Button
             size="small"
             onClick={() => {
-              navigate("/car-history");
+              navigate("/car-history", { state: { carId: marker[2].id } });
             }}
             style={{ zIndex: 3 }}
           >

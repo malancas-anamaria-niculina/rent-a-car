@@ -34,4 +34,13 @@ const finishRent = async (carId) => {
   }
 };
 
-export { bookACar, rentACar, finishRent };
+const cancelABook = async (carId) => {
+  try {
+    const response = await rentApi.post(`/${carId}/cancel`);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response.data.message);
+  }
+};
+
+export { bookACar, rentACar, finishRent, cancelABook };

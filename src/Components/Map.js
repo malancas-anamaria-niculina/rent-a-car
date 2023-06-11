@@ -9,7 +9,7 @@ import RoutingMachine from "./RoutingControl";
 import CarCard from "./CarCard";
 import NavigationControl from "./NavigationControl";
 
-import { Card, Button } from "@mui/material";
+import { Card, Button, Snackbar, Alert } from "@mui/material";
 
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import {
@@ -36,18 +36,24 @@ L.Icon.Default.mergeOptions({
 });
 
 export default function SimpleMap() {
-  // const date = new Date();
-  // console.log(dayjs(new Date(dayjs(date).format())).format('DD/MM/YYYY'));
   const ref = useRef(null);
   const {
-    rentData: { cars },
+    rentData: { cars, error: rentError, message },
     handleGetCars,
     handleFinish,
+    handleRentError,
+    handleRentMessage,
+    handleBook,
+    handleCancel,
   } = useContext(RentContext);
-  const { user } = useContext(UserContext);
+  const {
+    user: { id: userId, error: userError },
+    handleUserError,
+  } = useContext(UserContext);
   const [markerData, setMarkerData] = useState([]);
   const [userPosition, setUserPosition] = useState([]);
   const [markerState, setMarkerState] = useState(null);
+  const [topAlert, setTopAlert] = useState(false);
   const [checkCar, setCheckCar] = useState(false);
   const [bookState, setBookState] = useState(false);
   const [bookStartPicker, setBookStartPicker] = useState(false);
@@ -84,6 +90,10 @@ export default function SimpleMap() {
     }
   }, []);
 
+  useEffect(() => {
+    setTopAlert(!!rentError || !!userError || !!message);
+  }, [rentError, userError, message]);
+
   const rentCar = () => {
     setCheckCar(false);
     setRent(true);
@@ -103,6 +113,13 @@ export default function SimpleMap() {
     });
 
     markerState.target.setIcon(new newIcon({ iconUrl: yellowMapMarker }));
+  };
+
+  const handleCloseAlert = () => {
+    setTopAlert(false);
+    handleRentError("");
+    handleUserError("");
+    handleRentMessage("");
   };
 
   const MyMarkers = ({ data }) => {
@@ -126,17 +143,20 @@ export default function SimpleMap() {
         }
 
         if (marker[2] && !marker[2].isAvailable) {
-          console.log("Marker2", marker[2]);
           markerMsg =
             "This car is not available to rent or it's already booked!";
 
-          if (marker[2].ownerId === user.id) {
+          if (marker[2].ownerId === userId) {
             markerMsg = (
               <MarkerMessage
                 textFirst="Rent details"
-                textSecond="Finish rent"
+                textSecond={
+                  !!marker[2].rentalEndDate ? "Cancel Book" : "Finish rent"
+                }
                 actionFirst={() => console.log("rent details")}
-                actionSecond={handleFinish}
+                actionSecond={
+                  !!marker[2].rentalEndDate ? handleCancel : handleFinish
+                }
                 dataSecond={marker[2].id}
               />
             );
@@ -193,7 +213,6 @@ export default function SimpleMap() {
 
   const setNextTimePicker = (date) => {
     try {
-      setBookStart(dayjs(date.$d).format());
       if (bookStartPicker === true) {
         setBookStartPicker(false);
         setBookEndPicker(true);
@@ -214,17 +233,45 @@ export default function SimpleMap() {
     setBookStartPicker(false);
   };
 
+  const handleBookACar = async (date) => {
+    if (!!date && !!bookStart && !!selectedMarkerData[2].id) {
+      await handleBook(
+        selectedMarkerData[2].id,
+        bookStart,
+        dayjs(date.$d).format()
+      );
+    }
+
+    resetTimePickers();
+  };
+
   return (
     <div style={{ height: "100%", width: "100%" }}>
-      {!!checkCar &&
-        markerData.map((marker) => (
-          <CarCard
-            marker={marker}
-            setCheckCar={setCheckCar}
-            bookCar={bookCar}
-            rentCar={rentCar}
-          />
-        ))}
+      {!!topAlert && (
+        <Snackbar
+          open={topAlert}
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          autoHideDuration={6000}
+          onClose={handleCloseAlert}
+        >
+          <Alert
+            open={topAlert}
+            severity={!!rentError || !!userError ? "error" : "success"}
+            sx={{ width: "100%" }}
+            onClose={handleCloseAlert}
+          >
+            {rentError || userError || message}
+          </Alert>
+        </Snackbar>
+      )}
+      {!!checkCar && (
+        <CarCard
+          marker={selectedMarkerData}
+          setCheckCar={setCheckCar}
+          bookCar={bookCar}
+          rentCar={rentCar}
+        />
+      )}
       {!!bookState && (
         <Card
           sx={{
@@ -268,7 +315,7 @@ export default function SimpleMap() {
                   fontSize: 14,
                   zIndex: 2,
                   right: "25%",
-                  bottom: "1.5%",
+                  bottom: "2px",
                 }}
                 onClick={resetTimePickers}
                 onChange={resetTimePickers}
@@ -288,7 +335,7 @@ export default function SimpleMap() {
                   orientation="portrait"
                   onChange={setStartDate}
                   style={{ height: "60%", width: "60%" }}
-                  onAccept={(date) => setNextTimePicker(date)}
+                  onAccept={(date) => handleBookACar(date)}
                   slotProps={{
                     textField: { size: "small", text: "Test" },
                     tabs: {
@@ -309,7 +356,7 @@ export default function SimpleMap() {
                   fontSize: 14,
                   zIndex: 2,
                   right: "25%",
-                  bottom: "1.5%",
+                  bottom: "2px",
                 }}
                 onClick={resetTimePickers}
                 onChange={resetTimePickers}

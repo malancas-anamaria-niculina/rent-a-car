@@ -24,10 +24,9 @@ const CarsProvider = ({ children }) => {
 
   const [carHistory, setCarHistory] = useState(initialCar);
 
-  const handleCarsActivity = async () => {
+  const handleCarsActivity = async (carId) => {
     try {
-      const carData = await carsHistory(1);
-      console.log(carData);
+      const carData = await carsHistory(carId);
       setCarHistory({
         model: carData.rentingEvents[0].car.model,
         carType: carData.rentingEvents[0].car.type,
@@ -52,7 +51,6 @@ const CarsProvider = ({ children }) => {
           estimatedCost: `${rentingEvent.totalCost.toPrecision(3)} lei`,
         })),
       });
-      console.log(carData);
     } catch (error) {
       console.error("The data could not be retrieved: ", error.message);
     }

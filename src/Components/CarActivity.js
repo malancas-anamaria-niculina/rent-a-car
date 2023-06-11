@@ -13,6 +13,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { useState, useContext, useEffect } from "react";
 import CarsContext from "../contexts/CarsContext";
+import { useLocation } from "react-router-dom";
 
 const Row = ({ row }) => {
   const [open, setOpen] = useState(false);
@@ -88,13 +89,11 @@ const Row = ({ row }) => {
 
 export default function CarActivity() {
   const { carHistory, handleCarsActivity } = useContext(CarsContext);
+  const location = useLocation();
 
   useEffect(() => {
-    handleCarsActivity();
-    console.log(carHistory);
+    handleCarsActivity(location.state.carId);
   }, []);
-
-  const rows = [carHistory];
 
   return (
     <TableContainer component={Paper}>

@@ -90,7 +90,6 @@ export default function PastActivity() {
 
   useEffect(() => {
     handlePastActivity();
-    console.log(activity);
   }, []);
 
   return (

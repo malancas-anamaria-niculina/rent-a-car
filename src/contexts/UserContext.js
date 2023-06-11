@@ -44,10 +44,13 @@ const UserProvider = ({ children }) => {
     }
   };
 
+  const handleUserError = (value) => setUser({ ...user, error: value });
+
   const userContextValue = {
     user,
     handleRegister,
     handleLogin,
+    handleUserError,
   };
 
   return (
