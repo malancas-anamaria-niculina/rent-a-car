@@ -7,6 +7,7 @@ const ActivityContext = createContext();
 const ActivityProvider = ({ children }) => {
   const initialActivity = [
     {
+      isData: false,
       model: "",
       carType: "",
       odometer: null,
@@ -86,6 +87,7 @@ const ActivityProvider = ({ children }) => {
       setActivity(
         activityData.rentingEvents
           .map((plannedEvent) => ({
+            isData: true,
             model: plannedEvent.car.model,
             carType: plannedEvent.car.carType.type,
             odometer: `${plannedEvent.car.odometer} km`,

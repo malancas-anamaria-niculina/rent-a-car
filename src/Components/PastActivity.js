@@ -13,6 +13,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { useState, useContext, useEffect } from "react";
 import ActivityContext from "../contexts/ActivityContext";
+import Alert from "@mui/material/Alert";
 
 const Row = ({ row }) => {
   const [open, setOpen] = useState(false);
@@ -93,23 +94,30 @@ export default function PastActivity() {
   }, []);
 
   return (
-    <TableContainer component={Paper}>
-      <Table aria-label="collapsible table">
-        <TableHead>
-          <TableRow>
-            <TableCell />
-            <TableCell>Car name</TableCell>
-            <TableCell align="right">Type</TableCell>
-            <TableCell align="right">Odometer</TableCell>
-            <TableCell align="right">Year</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {activity.map((row, index) => (
-            <Row key={index} row={row} />
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <>
+      {!activity && (
+        <Alert severity="info">You don't have past activities!</Alert>
+      )}
+      {activity && (
+        <TableContainer component={Paper}>
+          <Table aria-label="collapsible table">
+            <TableHead>
+              <TableRow>
+                <TableCell />
+                <TableCell>Car name</TableCell>
+                <TableCell align="right">Type</TableCell>
+                <TableCell align="right">Odometer</TableCell>
+                <TableCell align="right">Year</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {activity.map((row, index) => (
+                <Row key={index} row={row} />
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )}
+    </>
   );
 }

@@ -14,6 +14,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { useState, useContext, useEffect } from "react";
 import ActivityContext from "../contexts/ActivityContext";
+import Alert from "@mui/material/Alert";
 
 const ActivityRow = ({ activity }) => {
   return (
@@ -107,13 +108,23 @@ export default function PlannedActivity() {
 
   useEffect(() => {
     handleActivity();
+    console.log(activity);
   }, []);
 
   return (
-    <List sx={{ width: "100%", maxWidth: "100%", bgcolor: "background.paper" }}>
-      {activity.map((rentAtivity, index) => (
-        <ActivityRow key={index} activity={rentAtivity}></ActivityRow>
-      ))}
-    </List>
+    <>
+      {!activity && (
+        <Alert severity="info">You don't have planned activities!</Alert>
+      )}
+      {!!activity && (
+        <List
+          sx={{ width: "100%", maxWidth: "100%", bgcolor: "background.paper" }}
+        >
+          {activity.map((rentAtivity, index) => (
+            <ActivityRow key={index} activity={rentAtivity}></ActivityRow>
+          ))}
+        </List>
+      )}
+    </>
   );
 }
