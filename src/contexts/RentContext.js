@@ -31,9 +31,14 @@ const RentProvider = ({ children }) => {
 
   const handleRent = async (carId) => {
     try {
-      const { rentingEvent } = await rentACar(carId);
+      const { rentingEvent, car } = await rentACar(carId);
+      console.log(rentData.cars.filter((car) => car.id !== carId).push(car))
       console.log(rentingEvent);
-      setRentData({ ...rentData, rentingEvent });
+      setRentData({
+        ...rentData,
+        rentingEvent,
+        car,
+      });
     } catch (error) {
       setRentData({
         ...initialRentData,

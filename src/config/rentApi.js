@@ -1,9 +1,10 @@
-import axios from "./axiosConfig";
+import axios from "axios";
 
 const BASE_URL = "https://localhost:7265/api/rent";
 
 const rentApi = axios.create({
   baseURL: BASE_URL,
+  headers: { Authorization: `Bearer ${localStorage.getItem("userToken")}` }
 });
 
 const bookACar = async (bookData) => {

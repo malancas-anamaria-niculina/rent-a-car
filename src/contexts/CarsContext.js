@@ -1,5 +1,5 @@
 import { createContext, useState } from "react";
-import { carIds, carsHistory } from "../config/carApi";
+import { carsHistory } from "../config/carApi";
 import dayjs from "dayjs";
 
 const CarsContext = createContext();
@@ -33,7 +33,7 @@ const CarsProvider = ({ children }) => {
         odometer: `${carData.rentingEvents[0].car.odometer} km`,
         year: carData.rentingEvents[0].car.year,
         availability:
-          carData.rentingEvents[0].car.isAvailable == true
+          carData.rentingEvents[0].car.isAvailable === true
             ? "Available"
             : "Not available",
         history: carData.rentingEvents.map((rentingEvent) => ({

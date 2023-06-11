@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Button } from "@mui/material";
+import RentContext from "../contexts/RentContext";
 
-const NavigationControl = ({ setRent, rentCar }) => {
+const NavigationControl = ({ setRent, car }) => {
+  const { handleRent } = useContext(RentContext);
+
   return (
     <>
       <Button
@@ -15,7 +18,10 @@ const NavigationControl = ({ setRent, rentCar }) => {
           right: "22%",
           top: "65%",
         }}
-        onClick={() => setRent(false)}
+        onClick={async () => {
+          setRent(false);
+          await handleRent(car.id);
+        }}
       >
         Start Rent
       </Button>
