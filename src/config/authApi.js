@@ -4,6 +4,7 @@ const BASE_URL = "https://localhost:7265/api";
 
 const authApi = axios.create({
   baseURL: BASE_URL,
+  headers: { Authorization: `Bearer ${localStorage.getItem("userToken")}` },
 });
 
 const registerUser = async (userData) => {

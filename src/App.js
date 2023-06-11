@@ -6,6 +6,7 @@ import PrivateRoutes from "./utils/PrivateRoutes";
 import Login from "./pages/Login/Login";
 import CarActivity from "./components/CarActivity";
 import Register from "./pages/Login/Register";
+import PlannedActivity from "./components/PlannedActivity";
 
 function App() {
   return (
@@ -17,9 +18,14 @@ function App() {
         <Route element={<PrivateRoutes />}>
           <Route element={<DashboardWrapper />}>
             <Route exact path="/dashboard" element={<Map />} />
+            <Route
+              exact
+              path="/planned-activity"
+              element={<PlannedActivity />}
+            />
+            <Route exact path="/car-history" element={<CarActivity />} />
           </Route>
         </Route>
-        <Route path="/car-history" element={<CarActivity />} />
       </Routes>
     </div>
   );

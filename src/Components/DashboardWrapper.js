@@ -15,8 +15,11 @@ import {
   SettingsRounded,
 } from "@mui/icons-material";
 import { Outlet } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const DashboardWrapper = () => {
+  const navigate = useNavigate();
+
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
       <AppBar
@@ -37,6 +40,9 @@ const DashboardWrapper = () => {
               component={Link}
               to="/dashboard"
               style={{ gap: 4 }}
+              onClick={() => {
+                navigate("/dashboard");
+              }}
             >
               <MapRounded />
               Map
@@ -53,8 +59,11 @@ const DashboardWrapper = () => {
             <Button
               color="inherit"
               component={Link}
-              to="/dashboard/user-activity"
+              to="/planned-activity"
               style={{ gap: 4 }}
+              onClick={() => {
+                navigate("/planned-activity");
+              }}
             >
               <CarRentalRounded />
               Planned Activity

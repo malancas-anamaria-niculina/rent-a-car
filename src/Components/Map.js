@@ -306,7 +306,9 @@ export default function SimpleMap() {
           )}
         </Card>
       )}
-      {!!rent && <NavigationControl setRent={setRent} car={selectedMarkerData[2]}/>}
+      {!!rent && (
+        <NavigationControl setRent={setRent} car={selectedMarkerData[2]} />
+      )}
       <MapContainer
         center={[46.771774, 23.62483]}
         zoom={13}
