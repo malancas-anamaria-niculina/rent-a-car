@@ -1,19 +1,19 @@
 import axios from "axios";
 
-const BASE_URL = "https://localhost:7265/api/cars";
+const BASE_URL = "https://localhost:7265/api/user";
 
-const carsApi = axios.create({
+const rentApi = axios.create({
   baseURL: BASE_URL,
   headers: { Authorization: `Bearer ${localStorage.getItem("userToken")}` },
 });
 
-const getAllCars = async () => {
+const plannedEvents = async () => {
   try {
-    const response = await carsApi.get("/");
+    const response = await rentApi.get("/planned-events");
     return response.data;
   } catch (error) {
     throw new Error(error.response.data.message);
   }
 };
 
-export { getAllCars };
+export { plannedEvents };

@@ -13,6 +13,7 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import "leaflet/dist/leaflet.css";
 import { RentProvider } from "./contexts/RentContext";
 import { CarsProvider } from "./contexts/CarsContext";
+import { ActivityProvider } from "./contexts/ActivityContext";
 
 const theme = createTheme({
   typography: {
@@ -26,11 +27,13 @@ root.render(
     <UserProvider>
       <RentProvider>
         <CarsProvider>
-          <ThemeProvider theme={theme}>
-            <BrowserRouter>
-              <App />
-            </BrowserRouter>
-          </ThemeProvider>
+          <ActivityProvider>
+            <ThemeProvider theme={theme}>
+              <BrowserRouter>
+                <App />
+              </BrowserRouter>
+            </ThemeProvider>
+          </ActivityProvider>
         </CarsProvider>
       </RentProvider>
     </UserProvider>

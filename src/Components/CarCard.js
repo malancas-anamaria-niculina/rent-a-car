@@ -14,7 +14,14 @@ import carImage from "../static/images/car1.jpg";
 const CarCard = ({ setCheckCar, marker, rentCar, bookCar }) => {
   return (
     <div className="rentCard" style={{ position: "absolute", zIndex: 2 }}>
-      <Card sx={{ width: "fit-content", borderRadius: 2, position: 'relative', pt: 2 }}>
+      <Card
+        sx={{
+          width: "fit-content",
+          borderRadius: 2,
+          position: "relative",
+          pt: 2,
+        }}
+      >
         <CloseIcon
           onClick={() => setCheckCar(false)}
           style={{
