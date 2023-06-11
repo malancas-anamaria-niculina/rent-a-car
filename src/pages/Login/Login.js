@@ -89,6 +89,7 @@ const LoginPage = () => {
             </FormControl>
             {error && (
               <ForgotLink
+                className="error-login"
                 component="div"
                 sx={{
                   display: { xs: "none", md: "flex" },

@@ -193,9 +193,6 @@ export default function SimpleMap() {
                   setSelectedMarkerData(marker);
                 }
               },
-              mouseover: (event) => {
-                event.target.openPopup();
-              },
             }}
           >
             <Popup>{markerMsg}</Popup>
@@ -379,7 +376,7 @@ export default function SimpleMap() {
       {showCurrentRent && <CurrentRent />}
       <MapContainer
         center={[46.771774, 23.62483]}
-        zoom={13}
+        zoom={12}
         scrollWheelZoom={false}
         doubleClickZoom={false}
         style={{ width: "100%", height: "80vh", zIndex: 1 }}
