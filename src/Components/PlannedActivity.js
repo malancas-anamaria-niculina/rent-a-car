@@ -113,10 +113,10 @@ export default function PlannedActivity() {
 
   return (
     <>
-      {!activity && (
+      {!activity.isData && (
         <Alert severity="info">You don't have planned activities!</Alert>
       )}
-      {!!activity && (
+      {!!activity.isData && (
         <List
           sx={{ width: "100%", maxWidth: "100%", bgcolor: "background.paper" }}
         >
