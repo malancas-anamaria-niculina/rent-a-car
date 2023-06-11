@@ -71,15 +71,6 @@ const DashboardWrapper = () => {
               <CarRentalRounded />
               Planned Activity
             </Button>
-            <Button
-              color="inherit"
-              component={Link}
-              to="/dashboard/settings"
-              style={{ gap: 4 }}
-            >
-              <SettingsRounded />
-              Settings
-            </Button>
           </Stack>
         </Toolbar>
       </AppBar>

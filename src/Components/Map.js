@@ -8,6 +8,8 @@ import dayjs from "dayjs";
 import RoutingMachine from "./RoutingControl";
 import CarCard from "./CarCard";
 import NavigationControl from "./NavigationControl";
+import MarkerMessage from "./MarkerMessage";
+import CurrentRent from "./CurrentRent";
 
 import { Card, Button, Snackbar, Alert } from "@mui/material";
 
@@ -27,7 +29,6 @@ import userMarker from "../static/images/userMarker.png";
 
 import RentContext from "../contexts/RentContext";
 import UserContext from "../contexts/UserContext";
-import MarkerMessage from "./MarkerMessage";
 
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: yellowMapMarker,
@@ -44,6 +45,7 @@ export default function SimpleMap() {
     handleRentError,
     handleRentMessage,
     handleBook,
+    handleCurrentRent,
     handleCancel,
   } = useContext(RentContext);
   const {
@@ -62,6 +64,7 @@ export default function SimpleMap() {
   const [bookEnd, setBookEnd] = useState(null);
   const [rent, setRent] = useState(false);
   const [selectedMarkerData, setSelectedMarkerData] = useState(null);
+  const [showCurrentRent, setShowCurrentRent] = useState(false);
 
   useEffect(() => {
     async function fetchCars() {
@@ -153,7 +156,10 @@ export default function SimpleMap() {
                 textSecond={
                   !!marker[2].rentalEndDate ? "Cancel Book" : "Finish rent"
                 }
-                actionFirst={() => console.log("rent details")}
+                actionFirst={async () => {
+                  setShowCurrentRent(true);
+                  await handleCurrentRent();
+                }}
                 actionSecond={
                   !!marker[2].rentalEndDate ? handleCancel : handleFinish
                 }
@@ -246,7 +252,7 @@ export default function SimpleMap() {
   };
 
   return (
-    <div style={{ height: "100%", width: "100%" }}>
+    <div style={{ height: "100%", width: "100%", position: "relative" }}>
       {!!topAlert && (
         <Snackbar
           open={topAlert}
@@ -370,6 +376,7 @@ export default function SimpleMap() {
       {!!rent && (
         <NavigationControl setRent={setRent} car={selectedMarkerData[2]} />
       )}
+      {showCurrentRent && <CurrentRent />}
       <MapContainer
         center={[46.771774, 23.62483]}
         zoom={13}

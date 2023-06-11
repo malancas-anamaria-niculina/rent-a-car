@@ -108,15 +108,14 @@ export default function PlannedActivity() {
 
   useEffect(() => {
     handleActivity();
-    console.log(activity);
   }, []);
 
   return (
     <>
-      {!activity.isData && (
+      {!activity.filter((act) => act.isData) && (
         <Alert severity="info">You don't have planned activities!</Alert>
       )}
-      {!!activity.isData && (
+      {!!activity.length && (
         <List
           sx={{ width: "100%", maxWidth: "100%", bgcolor: "background.paper" }}
         >

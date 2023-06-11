@@ -1,6 +1,7 @@
 import { createContext, useState } from "react";
 import { rentACar, bookACar, finishRent, cancelABook } from "../config/rentApi";
 import { getAllCars } from "../config/carsApi";
+import { currentRent } from "../config/userApi";
 
 const RentContext = createContext();
 
@@ -113,6 +114,24 @@ const RentProvider = ({ children }) => {
     }
   };
 
+  const handleCurrentRent = async () => {
+    try {
+      const { rentingEvent, message } = await currentRent();
+      setRentData({
+        ...rentData,
+        message,
+        rentingEvent,
+      });
+      console.log(rentingEvent, message);
+    } catch (error) {
+      setRentData({
+        ...initialRentData,
+        error: error.message || "There is something word with your renting",
+      });
+      console.error("Finish renting failed: ", error.message);
+    }
+  };
+
   const handleRentError = (value) => setRentData({ ...rentData, error: value });
 
   const handleRentMessage = (value) =>
@@ -127,6 +146,7 @@ const RentProvider = ({ children }) => {
     handleFinish,
     handleRentError,
     handleRentMessage,
+    handleCurrentRent,
   };
 
   return (

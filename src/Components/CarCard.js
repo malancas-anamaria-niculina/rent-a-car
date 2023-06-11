@@ -75,7 +75,7 @@ const CarCard = ({ setCheckCar, marker, rentCar, bookCar }) => {
             color="text.secondary"
             style={{ fontSize: 12 }}
           >
-            Price: {marker[2]["price"]}$
+            Price: {marker[2]["price"]} RON
           </Typography>
         </CardContent>
         <CardActions style={{ justifyContent: "center" }}>

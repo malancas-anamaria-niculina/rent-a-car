@@ -33,6 +33,7 @@ const ActivityProvider = ({ children }) => {
       const activityData = await plannedEvents();
       setActivity(
         activityData.rentingEvents.map((plannedEvent) => ({
+          isData: true,
           model: plannedEvent.car.model,
           carType: plannedEvent.car.carType.type,
           odometer: `${plannedEvent.car.odometer} km`,
