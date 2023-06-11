@@ -50,8 +50,11 @@ const DashboardWrapper = () => {
             <Button
               color="inherit"
               component={Link}
-              to="/dashboard/user-activity"
+              to="/user-activity"
               style={{ gap: 4 }}
+              onClick={() => {
+                navigate("/user-activity");
+              }}
             >
               <LocalActivityRounded />
               User Activity

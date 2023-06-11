@@ -16,8 +16,8 @@ const CarsProvider = ({ children }) => {
         rentalStartDate: "",
         rentalEndDate: "",
         pricePerHour: null,
-        totalRentingHours: null,
-        totalCost: null,
+        estimatedRentingHours: null,
+        estimatedCost: null,
       },
     ],
   };
@@ -44,10 +44,11 @@ const CarsProvider = ({ children }) => {
             "YYYY-MM-DD, HH:mm:ss"
           ),
           pricePerHour: `${rentingEvent.pricePerHour} lei`,
-          totalRentingHours: rentingEvent.totalRentingHours.toPrecision(1),
-          totalCost: rentingEvent.totalCost.toPrecision(3),
+          estimatedRentingHours: rentingEvent.totalRentingHours.toPrecision(1),
+          estimatedCost: `${rentingEvent.totalCost.toPrecision(3)} lei`,
         })),
       });
+      console.log(carData);
     } catch (error) {
       console.error("The data could not be retrieved: ", error.message);
     }

@@ -7,6 +7,7 @@ import Login from "./pages/Login/Login";
 import CarActivity from "./components/CarActivity";
 import Register from "./pages/Login/Register";
 import PlannedActivity from "./components/PlannedActivity";
+import PastActivity from "./components/PastActivity";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
               element={<PlannedActivity />}
             />
             <Route exact path="/car-history" element={<CarActivity />} />
+            <Route exact path="/user-activity" element={<PastActivity />} />
           </Route>
         </Route>
       </Routes>

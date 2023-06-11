@@ -12,7 +12,7 @@ import Paper from "@mui/material/Paper";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { useState, useContext, useEffect } from "react";
-import CarsContext from "../contexts/CarsContext";
+import ActivityContext from "../contexts/ActivityContext";
 
 const Row = ({ row }) => {
   const [open, setOpen] = useState(false);
@@ -35,7 +35,6 @@ const Row = ({ row }) => {
         <TableCell align="right">{row.carType}</TableCell>
         <TableCell align="right">{row.odometer}</TableCell>
         <TableCell align="right">{row.year}</TableCell>
-        <TableCell align="right">{row.availability}</TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -55,18 +54,18 @@ const Row = ({ row }) => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {row.history.map((historyRow) => (
-                    <TableRow key={historyRow.rentalStartDate}>
+                  {row.activity.map((activityRow) => (
+                    <TableRow key={activityRow.rentalStartDate}>
                       <TableCell component="th" scope="row">
-                        {historyRow.rentalStartDate}
+                        {activityRow.rentalStartDate}
                       </TableCell>
-                      <TableCell>{historyRow.rentalEndDate}</TableCell>
-                      <TableCell>{historyRow.pricePerHour}</TableCell>
+                      <TableCell>{activityRow.rentalEndDate}</TableCell>
+                      <TableCell>{activityRow.pricePerHour}</TableCell>
                       <TableCell align="right">
-                        {historyRow.totalRentingHours}
+                        {activityRow.totalRentingHours}
                       </TableCell>
                       <TableCell align="right">
-                        {historyRow.totalCost}
+                        {activityRow.totalCost}
                       </TableCell>
                     </TableRow>
                   ))}
@@ -80,14 +79,14 @@ const Row = ({ row }) => {
   );
 };
 
-export default function CarActivity() {
-  const { carHistory, handleCarsActivity } = useContext(CarsContext);
+export default function PastActivity() {
+  const data = useContext(ActivityContext);
+  const { activity, handlePastActivity } = useContext(ActivityContext);
 
   useEffect(() => {
-    handleCarsActivity();
+    handlePastActivity();
+    console.log(activity);
   }, []);
-
-  const rows = [carHistory];
 
   return (
     <TableContainer component={Paper}>
@@ -99,11 +98,10 @@ export default function CarActivity() {
             <TableCell align="right">Type</TableCell>
             <TableCell align="right">Odometer</TableCell>
             <TableCell align="right">Year</TableCell>
-            <TableCell align="right">Availability</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {activity.map((row) => (
             <Row key={row.model} row={row} />
           ))}
         </TableBody>

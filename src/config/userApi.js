@@ -16,4 +16,13 @@ const plannedEvents = async () => {
   }
 };
 
-export { plannedEvents };
+const pastEvents = async () => {
+  try {
+    const response = await rentApi.get("/past-events");
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response.data.message);
+  }
+};
+
+export { plannedEvents, pastEvents };
