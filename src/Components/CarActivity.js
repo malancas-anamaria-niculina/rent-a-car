@@ -49,7 +49,10 @@ const Row = ({ row }) => {
                   <TableRow>
                     <TableCell>Rental start date</TableCell>
                     <TableCell>Rental end date</TableCell>
+                    <TableCell>Rental start hour</TableCell>
+                    <TableCell>Rental end hour</TableCell>
                     <TableCell>Price per hour</TableCell>
+                    <TableCell>Rent user</TableCell>
                     <TableCell align="right">Total renting hours</TableCell>
                     <TableCell align="right">Total cost</TableCell>
                   </TableRow>
@@ -61,12 +64,15 @@ const Row = ({ row }) => {
                         {historyRow.rentalStartDate}
                       </TableCell>
                       <TableCell>{historyRow.rentalEndDate}</TableCell>
+                      <TableCell>{historyRow.rentalStartHour}</TableCell>
+                      <TableCell>{historyRow.rentalEndHour}</TableCell>
                       <TableCell>{historyRow.pricePerHour}</TableCell>
+                      <TableCell>{historyRow.user}</TableCell>
                       <TableCell align="right">
-                        {historyRow.totalRentingHours}
+                        {historyRow.estimatedRentingHours}
                       </TableCell>
                       <TableCell align="right">
-                        {historyRow.totalCost}
+                        {historyRow.estimatedCost}
                       </TableCell>
                     </TableRow>
                   ))}
@@ -85,6 +91,7 @@ export default function CarActivity() {
 
   useEffect(() => {
     handleCarsActivity();
+    console.log(carHistory);
   }, []);
 
   const rows = [carHistory];
@@ -103,9 +110,7 @@ export default function CarActivity() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <Row key={row.model} row={row} />
-          ))}
+          <Row key="1" row={carHistory} />
         </TableBody>
       </Table>
     </TableContainer>

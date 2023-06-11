@@ -27,6 +27,7 @@ const CarsProvider = ({ children }) => {
   const handleCarsActivity = async () => {
     try {
       const carData = await carsHistory(1);
+      console.log(carData);
       setCarHistory({
         model: carData.rentingEvents[0].car.model,
         carType: carData.rentingEvents[0].car.type,
@@ -37,12 +38,15 @@ const CarsProvider = ({ children }) => {
             ? "Available"
             : "Not available",
         history: carData.rentingEvents.map((rentingEvent) => ({
+          user: rentingEvent.car.owner.userName,
+          rentalStartHour: dayjs(rentingEvent.rentalStartDate).format(
+            "HH:mm:ss"
+          ),
+          rentalEndHour: dayjs(rentingEvent.rentalEndDate).format("HH:mm:ss"),
           rentalStartDate: dayjs(rentingEvent.rentalStartDate).format(
-            "YYYY-MM-DD, HH:mm:ss"
+            "YYYY-MM-DD"
           ),
-          rentalEndDate: dayjs(rentingEvent.rentalEndDate).format(
-            "YYYY-MM-DD, HH:mm:ss"
-          ),
+          rentalEndDate: dayjs(rentingEvent.rentalEndDate).format("YYYY-MM-DD"),
           pricePerHour: `${rentingEvent.pricePerHour} lei`,
           estimatedRentingHours: rentingEvent.totalRentingHours.toPrecision(1),
           estimatedCost: `${rentingEvent.totalCost.toPrecision(3)} lei`,

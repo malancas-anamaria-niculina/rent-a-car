@@ -10,8 +10,11 @@ import {
 
 import CloseIcon from "@mui/icons-material/Close";
 import carImage from "../static/images/car1.jpg";
+import { useNavigate } from "react-router-dom";
 
 const CarCard = ({ setCheckCar, marker, rentCar, bookCar }) => {
+  const navigate = useNavigate();
+
   return (
     <div className="rentCard" style={{ position: "absolute", zIndex: 2 }}>
       <Card
@@ -91,6 +94,17 @@ const CarCard = ({ setCheckCar, marker, rentCar, bookCar }) => {
             style={{ zIndex: 3 }}
           >
             Book
+          </Button>
+        </CardActions>
+        <CardActions style={{ justifyContent: "center" }}>
+          <Button
+            size="small"
+            onClick={() => {
+              navigate("/car-history");
+            }}
+            style={{ zIndex: 3 }}
+          >
+            View car history
           </Button>
         </CardActions>
       </Card>
