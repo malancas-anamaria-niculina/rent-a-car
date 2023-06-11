@@ -4,7 +4,7 @@ import Map from "./components/Map";
 import DashboardWrapper from "./components/DashboardWrapper";
 import PrivateRoutes from "./utils/PrivateRoutes";
 import Login from "./pages/Login/Login";
-import CarActivity from "./components/CarActivity"
+import CarActivity from "./components/CarActivity";
 import Register from "./pages/Login/Register";
 
 function App() {
@@ -19,7 +19,7 @@ function App() {
             <Route exact path="/dashboard" element={<Map />} />
           </Route>
         </Route>
-        <Route path="/carHistory" element={<CarActivity />} />
+        <Route path="/car-history" element={<CarActivity />} />
       </Routes>
     </div>
   );

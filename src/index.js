@@ -12,6 +12,7 @@ import { UserProvider } from "./contexts/UserContext";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import "leaflet/dist/leaflet.css";
 import { RentProvider } from "./contexts/RentContext";
+import { CarsProvider } from "./contexts/CarsContext";
 
 const theme = createTheme({
   typography: {
@@ -24,11 +25,13 @@ root.render(
   <React.Fragment>
     <UserProvider>
       <RentProvider>
-        <ThemeProvider theme={theme}>
-          <BrowserRouter>
-            <App />
-          </BrowserRouter>
-        </ThemeProvider>
+        <CarsProvider>
+          <ThemeProvider theme={theme}>
+            <BrowserRouter>
+              <App />
+            </BrowserRouter>
+          </ThemeProvider>
+        </CarsProvider>
       </RentProvider>
     </UserProvider>
   </React.Fragment>
