@@ -48,18 +48,22 @@ const Row = ({ row }) => {
                   <TableRow>
                     <TableCell>Rental start date</TableCell>
                     <TableCell>Rental end date</TableCell>
+                    <TableCell>Rental start hour</TableCell>
+                    <TableCell>Rental end hour</TableCell>
                     <TableCell>Price per hour</TableCell>
                     <TableCell align="right">Total renting hours</TableCell>
                     <TableCell align="right">Total cost</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {row.activity.map((activityRow) => (
-                    <TableRow key={activityRow.rentalStartDate}>
+                  {row.activity.map((activityRow, index) => (
+                    <TableRow key={index}>
                       <TableCell component="th" scope="row">
                         {activityRow.rentalStartDate}
                       </TableCell>
                       <TableCell>{activityRow.rentalEndDate}</TableCell>
+                      <TableCell>{activityRow.rentalStartHour}</TableCell>
+                      <TableCell>{activityRow.rentalEndHour}</TableCell>
                       <TableCell>{activityRow.pricePerHour}</TableCell>
                       <TableCell align="right">
                         {activityRow.totalRentingHours}
@@ -101,8 +105,8 @@ export default function PastActivity() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {activity.map((row) => (
-            <Row key={row.model} row={row} />
+          {activity.map((row, index) => (
+            <Row key={index} row={row} />
           ))}
         </TableBody>
       </Table>

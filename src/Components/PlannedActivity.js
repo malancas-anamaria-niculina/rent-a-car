@@ -76,8 +76,8 @@ const ActivityRow = ({ activity }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {activity.activity.map((activityRow) => (
-                <TableRow key={activityRow.rentalStartDate}>
+              {activity.activity.map((activityRow, index) => (
+                <TableRow key={index}>
                   <TableCell component="th" scope="row">
                     {activityRow.rentalStartDate}
                   </TableCell>
@@ -111,8 +111,8 @@ export default function PlannedActivity() {
 
   return (
     <List sx={{ width: "100%", maxWidth: "100%", bgcolor: "background.paper" }}>
-      {activity.map((rentAtivity) => (
-        <ActivityRow activity={rentAtivity}></ActivityRow>
+      {activity.map((rentAtivity, index) => (
+        <ActivityRow key={index} activity={rentAtivity}></ActivityRow>
       ))}
     </List>
   );
