@@ -10,14 +10,12 @@
     "@mui/material": "^5.12.3",
     "@mui/x-date-pickers": "^6.7.0",
     "@mui/x-date-pickers-pro": "^6.7.0",
-    "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.4.0",
     "dayjs": "^1.11.8",
     "google-map-react": "^2.2.0",
     "leaflet": "^1.9.4",
     "leaflet-routing-machine": "^3.2.12",
-    "react": "^18.2.0",
     "react-day-picker": "^8.7.1",
     "react-dom": "^18.2.0",
     "react-leaflet": "^4.2.1",
@@ -51,13 +49,16 @@
     ]
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
     "@vitejs/plugin-react": "^4.0.0",
+    "@wdio/browser-runner": "^8.11.1",
     "@wdio/cli": "^8.11.1",
     "@wdio/local-runner": "^8.11.1",
     "@wdio/mocha-framework": "^8.11.0",
     "@wdio/spec-reporter": "^8.11.0",
     "chromedriver": "^114.0.2",
+    "react": "^18.2.0",
     "wdio-chromedriver-service": "^8.1.1"
   }
 }

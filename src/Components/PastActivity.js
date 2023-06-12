@@ -94,7 +94,9 @@ export default function PastActivity() {
   return (
     <>
       {!!!activity.isData && (
-        <Alert severity="info">You don't have past activities!</Alert>
+        <Alert id="no-activities" severity="info">
+          You don't have past activities!
+        </Alert>
       )}
       {activity.isData && (
         <TableContainer component={Paper}>
