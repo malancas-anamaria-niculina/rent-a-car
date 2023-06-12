@@ -1,4 +1,4 @@
-describe("Login test", () => {
+describe("Rent test", () => {
   it("Rent a car", async () => {
     await browser.url("http://localhost:3000/");
     await browser.execute(() =>

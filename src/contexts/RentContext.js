@@ -19,7 +19,7 @@ const RentProvider = ({ children }) => {
   const handleGetCars = async () => {
     try {
       const { cars } = await getAllCars();
-      setRentData({ ...rentData, cars });
+      setRentData({ ...rentData, error: "", cars });
     } catch (error) {
       setRentData({
         ...initialRentData,
@@ -37,6 +37,7 @@ const RentProvider = ({ children }) => {
       setRentData({
         ...rentData,
         message,
+        error: "",
         rentingEvent,
         car,
         cars: [...rentCars, car],
@@ -61,6 +62,7 @@ const RentProvider = ({ children }) => {
       setRentData({
         ...rentData,
         message,
+        error: "",
         rentingEvent,
         car,
         cars: [...rentCars, car],
@@ -82,6 +84,7 @@ const RentProvider = ({ children }) => {
         ...rentData,
         message,
         rentingEvent,
+        error: "",
         car,
         cars: [...rentCars, car],
       });
@@ -101,6 +104,7 @@ const RentProvider = ({ children }) => {
       setRentData({
         ...rentData,
         message,
+        error: "",
         rentingEvent,
         car,
         cars: [...rentCars, car],
@@ -120,6 +124,7 @@ const RentProvider = ({ children }) => {
       setRentData({
         ...rentData,
         message,
+        error: "",
         rentingEvent,
       });
       console.log(rentingEvent, message);
